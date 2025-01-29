@@ -5,20 +5,22 @@ const cors = require('cors');
 const sequelize = require('./util/database');
 const Blog = require('./models/blog');
 const Comment = require('./models/comments');
-const mainroute = require('./routes/mainRoutes');
+const mainRoute = require('./routes/mainRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 const app = express();
 app.use(cors());
 
 app.use(bodyParser.json({extended:false}));
-app.use(mainroute);
+app.use('/comments',commentRoutes);
+app.use(mainRoute);
 
 //Associations
 Comment.belongsTo(Blog, {constraints: true, onDelete:'CASCADE'});
 Blog.hasMany(Comment);
 
 
-sequelize.sync({force:true})
+sequelize.sync()
 .then(result => {
     app.listen(5500);
 }).catch(err => console.log(err));

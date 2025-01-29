@@ -3,7 +3,7 @@ const Comment = require('../models/comments');
 
 exports.getBlogs = async (req,res,next) => {
     try {
-        console.log("Check");
+        
         const blogs = await Blog.findAll({
             include: {
                 model: Comment,
@@ -36,7 +36,7 @@ exports.postAddBlog = (req,res,next) => {
 }
 
 exports.postAddComment = async (req,res,next) => {
-    const blogId = req.params.blogId;
+    const blogId = req.params.BlogId;
     const {comment} = req.body;
 
     if(!comment) {
@@ -47,7 +47,7 @@ exports.postAddComment = async (req,res,next) => {
         
         const newComment = await Comment.create({
             blogId: blog.id,
-            comments
+            comment: comment
         });
 
         res.status(200).json({ message: 'Comment added Successfully', comment: newComment});
